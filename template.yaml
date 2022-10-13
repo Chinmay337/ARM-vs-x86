@@ -1,0 +1,150 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Functions for ARM and x86
+Resources:
+  ##########################################################################
+  #   Lambda Function                                                      #
+  ##########################################################################
+
+
+  ARMGo:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: ArmGolang
+      CodeUri: ARMGo/
+      Handler: bootstrap
+      Runtime: provided.al2
+      Architectures: [arm64]
+      Timeout: 120
+      Policies:
+        ## Read more about SAM Policy templates at:
+        ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+        - AWSLambdaExecute
+        - DynamoDBWritePolicy:
+            TableName: !Ref ARMDynamoDBTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref ARMDynamoDBTable
+    Metadata:
+      BuildMethod: makefile
+
+  ARMGoURL:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn: !Ref ARMGo
+
+  permissionForURLInvokeArm:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref ARMGo
+      FunctionUrlAuthType: 'NONE'
+      Action: lambda:InvokeFunctionUrl
+      Principal: '*'
+
+  permissionForURLInvokeIntel:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref GoIntel
+      FunctionUrlAuthType: 'NONE'
+      Action: lambda:InvokeFunctionUrl
+      Principal: '*'
+
+  GoIntel:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: x86Golang
+      CodeUri: IntelGo/
+      Handler: bootstrap
+      Runtime: provided.al2
+      Architectures:
+        - x86_64
+      Timeout: 120
+      Policies:
+        ## Read more about SAM Policy templates at:
+        ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+        - AWSLambdaExecute
+        - DynamoDBWritePolicy:
+            TableName: !Ref ARMDynamoDBTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref ARMDynamoDBTable
+    Metadata:
+      BuildMethod: makefile
+
+  GoIntelURL:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn: !Ref GoIntel
+
+  ##########################################################################
+  #   DynamoDB                                                            #
+  ##########################################################################
+  ARMDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ARMDynamo
+      AttributeDefinitions:
+        - AttributeName: Email
+          AttributeType: S
+        - AttributeName: Date
+          AttributeType: S
+      KeySchema:
+        - AttributeName: Email
+          KeyType: HASH
+        - AttributeName: Date
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+      ProvisionedThroughput:
+        ReadCapacityUnits: 0
+        WriteCapacityUnits: 0
+
+#  BlogHttpApi:
+#    Type: AWS::Serverless::Api
+#    Properties:
+#      StageName: Test
+#      CorsConfiguration: True
+
+
+
+#  BlogEmailDynamoTable:
+#    Type: AWS::DynamoDB::Table
+#    Properties:
+#      AttributeDefinitions:
+#        - AttributeName: Email
+#          AttributeType: S
+#      KeySchema:
+#        - AttributeName: Email
+#          KeyType: HASH
+#      BillingMode: PAY_PER_REQUEST
+  ##########################################################################
+  #   OUTPUTS                                                              #
+  ##########################################################################
+
+Outputs:
+
+
+  ARMDynamo:
+    Value: !Ref ARMDynamoDBTable
+    Description: DynamoDb Table to test lambdas
+
+  ARMGoLambdafn:
+    Value: !Ref ARMGo
+    Description: Fn for Go ARM
+
+  ARMGoLambdaURL:
+    Value: !GetAtt ARMGoURL.FunctionUrl
+
+
+  x86GoLambdafn:
+    Value: !Ref GoIntelURL
+    Description: Fn for Go ARM
+
+  x86GoLambdaURL:
+    Value: !GetAtt GoIntelURL.FunctionUrl
+
+#  BlogAPIEndpointSubs:
+#    Value: !Ref BlogHttpApi
+#    Description : API Gateway POST Endpoint for Subscribers
