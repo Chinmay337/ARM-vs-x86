@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
   Functions for ARM and x86
@@ -6,7 +6,6 @@ Resources:
   ##########################################################################
   #   Lambda Function                                                      #
   ##########################################################################
-
 
   ARMGo:
     Type: AWS::Serverless::Function
@@ -39,17 +38,17 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName: !Ref ARMGo
-      FunctionUrlAuthType: 'NONE'
+      FunctionUrlAuthType: "NONE"
       Action: lambda:InvokeFunctionUrl
-      Principal: '*'
+      Principal: "*"
 
   permissionForURLInvokeIntel:
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName: !Ref GoIntel
-      FunctionUrlAuthType: 'NONE'
+      FunctionUrlAuthType: "NONE"
       Action: lambda:InvokeFunctionUrl
-      Principal: '*'
+      Principal: "*"
 
   GoIntel:
     Type: AWS::Serverless::Function
@@ -85,7 +84,7 @@ Resources:
   ARMDynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ARMDynamo
+      TableName: ARMDynamodb
       AttributeDefinitions:
         - AttributeName: Email
           AttributeType: S
@@ -107,8 +106,6 @@ Resources:
 #      StageName: Test
 #      CorsConfiguration: True
 
-
-
 #  BlogEmailDynamoTable:
 #    Type: AWS::DynamoDB::Table
 #    Properties:
@@ -119,13 +116,11 @@ Resources:
 #        - AttributeName: Email
 #          KeyType: HASH
 #      BillingMode: PAY_PER_REQUEST
-  ##########################################################################
-  #   OUTPUTS                                                              #
-  ##########################################################################
+##########################################################################
+#   OUTPUTS                                                              #
+##########################################################################
 
 Outputs:
-
-
   ARMDynamo:
     Value: !Ref ARMDynamoDBTable
     Description: DynamoDb Table to test lambdas
@@ -137,14 +132,12 @@ Outputs:
   ARMGoLambdaURL:
     Value: !GetAtt ARMGoURL.FunctionUrl
 
-
   x86GoLambdafn:
     Value: !Ref GoIntelURL
     Description: Fn for Go ARM
 
   x86GoLambdaURL:
     Value: !GetAtt GoIntelURL.FunctionUrl
-
 #  BlogAPIEndpointSubs:
 #    Value: !Ref BlogHttpApi
 #    Description : API Gateway POST Endpoint for Subscribers

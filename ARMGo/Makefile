@@ -1,4 +1,3 @@
 build-ARMGo:
-	set "GOOS=linux" && go build -o bootstrap
-	dir
-	copy ./bootstrap $(ARTIFACTS_DIR)/bootstrap
+	GOOS=linux GOARCH=arm64 go build -o bootstrap
+	cp ./bootstrap $(ARTIFACTS_DIR)/.
