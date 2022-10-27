@@ -17,8 +17,7 @@ Resources:
       Architectures: [arm64]
       Timeout: 120
       Tags:
-        fnname: 'ARMGoFloat'
-        anothertag: 'testtag'
+        Name: "ARMGoFloat"
       Policies:
         ## Read more about SAM Policy templates at:
         ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
@@ -64,8 +63,7 @@ Resources:
         - x86_64
       Timeout: 120
       Tags:
-        fnname: 'IntelGoFloat'
-        anothertag: 'testtag'
+        Name: "IntelGoFloat"
       Policies:
         ## Read more about SAM Policy templates at:
         ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
