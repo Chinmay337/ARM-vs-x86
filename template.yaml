@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
   Functions for ARM and x86
@@ -6,7 +6,6 @@ Resources:
   ##########################################################################
   #   Lambda Function                                                      #
   ##########################################################################
-
 
   ARMGo:
     Type: AWS::Serverless::Function
@@ -17,6 +16,9 @@ Resources:
       Runtime: provided.al2
       Architectures: [arm64]
       Timeout: 120
+      Tags:
+        fnname: 'ARMGoFloat'
+        anothertag: 'testtag'
       Policies:
         ## Read more about SAM Policy templates at:
         ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
@@ -39,17 +41,17 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName: !Ref ARMGo
-      FunctionUrlAuthType: 'NONE'
+      FunctionUrlAuthType: "NONE"
       Action: lambda:InvokeFunctionUrl
-      Principal: '*'
+      Principal: "*"
 
   permissionForURLInvokeIntel:
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName: !Ref GoIntel
-      FunctionUrlAuthType: 'NONE'
+      FunctionUrlAuthType: "NONE"
       Action: lambda:InvokeFunctionUrl
-      Principal: '*'
+      Principal: "*"
 
   GoIntel:
     Type: AWS::Serverless::Function
@@ -61,6 +63,9 @@ Resources:
       Architectures:
         - x86_64
       Timeout: 120
+      Tags:
+        fnname: 'IntelGoFloat'
+        anothertag: 'testtag'
       Policies:
         ## Read more about SAM Policy templates at:
         ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
@@ -107,8 +112,6 @@ Resources:
 #      StageName: Test
 #      CorsConfiguration: True
 
-
-
 #  BlogEmailDynamoTable:
 #    Type: AWS::DynamoDB::Table
 #    Properties:
@@ -119,13 +122,11 @@ Resources:
 #        - AttributeName: Email
 #          KeyType: HASH
 #      BillingMode: PAY_PER_REQUEST
-  ##########################################################################
-  #   OUTPUTS                                                              #
-  ##########################################################################
+##########################################################################
+#   OUTPUTS                                                              #
+##########################################################################
 
 Outputs:
-
-
   ARMDynamo:
     Value: !Ref ARMDynamoDBTable
     Description: DynamoDb Table to test lambdas
@@ -137,14 +138,12 @@ Outputs:
   ARMGoLambdaURL:
     Value: !GetAtt ARMGoURL.FunctionUrl
 
-
   x86GoLambdafn:
     Value: !Ref GoIntelURL
     Description: Fn for Go ARM
 
   x86GoLambdaURL:
     Value: !GetAtt GoIntelURL.FunctionUrl
-
 #  BlogAPIEndpointSubs:
 #    Value: !Ref BlogHttpApi
 #    Description : API Gateway POST Endpoint for Subscribers
