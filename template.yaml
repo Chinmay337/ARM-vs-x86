@@ -90,7 +90,7 @@ Resources:
   ARMDynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ARMDynamodb
+      TableName: ARMDynamo
       AttributeDefinitions:
         - AttributeName: Email
           AttributeType: S

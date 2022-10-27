@@ -1,3 +1,4 @@
 build-GoIntel:
-	GOOS=linux go build -o bootstrap
-	cp ./bootstrap $(ARTIFACTS_DIR)/.
+	set "GOOS=linux" && go build -o bootstrap
+	dir
+	copy ./bootstrap $(ARTIFACTS_DIR)/bootstrap
