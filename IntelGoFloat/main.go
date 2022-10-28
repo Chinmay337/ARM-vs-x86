@@ -28,6 +28,7 @@ func HandleRequest(request events.LambdaFunctionURLRequest) (events.LambdaFuncti
 
 func ComputeFloat(input []float64) (events.LambdaFunctionURLResponse, error) {
 	for _, val := range input {
+		fmt.Println("Doing", val)
 		closest_items := []float64{}
 		bigger := 0
 		smaller := 0
