@@ -1,0 +1,123 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'Functions for ARM and x86
+
+  '
+Resources:
+  ARMGoFloat:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: ArmGoFloat
+      CodeUri: ARMGoFloat
+      Handler: bootstrap
+      Runtime: provided.al2
+      Architectures:
+      - arm64
+      Timeout: 120
+      Tags:
+        Name: ARMGoFloat
+      Policies:
+      - AWSLambdaExecute
+      - DynamoDBWritePolicy:
+          TableName:
+            Ref: ARMDynamoDBTable
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: ARMDynamoDBTable
+    Metadata:
+      BuildMethod: makefile
+      SamResourceId: ARMGoFloat
+  ARMGoFloatURL:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn:
+        Ref: ARMGoFloat
+  permissionForURLInvokeArm:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+        Ref: ARMGoFloat
+      FunctionUrlAuthType: NONE
+      Action: lambda:InvokeFunctionUrl
+      Principal: '*'
+  IntelGoInt:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: IntelGoInt
+      CodeUri: IntelGoInt
+      Handler: bootstrap
+      Runtime: provided.al2
+      Architectures:
+      - x86_64
+      Timeout: 120
+      Tags:
+        Name: IntelGoInt
+      Policies:
+      - AWSLambdaExecute
+      - DynamoDBWritePolicy:
+          TableName:
+            Ref: ARMDynamoDBTable
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: ARMDynamoDBTable
+    Metadata:
+      BuildMethod: makefile
+      SamResourceId: IntelGoInt
+  IntelGoIntURL:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn:
+        Ref: IntelGoInt
+  permissionForURLInvokeIntelInt:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+        Ref: IntelGoInt
+      FunctionUrlAuthType: NONE
+      Action: lambda:InvokeFunctionUrl
+      Principal: '*'
+  ARMDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ARMDynamo
+      AttributeDefinitions:
+      - AttributeName: Email
+        AttributeType: S
+      - AttributeName: Date
+        AttributeType: S
+      KeySchema:
+      - AttributeName: Email
+        KeyType: HASH
+      - AttributeName: Date
+        KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+      ProvisionedThroughput:
+        ReadCapacityUnits: 0
+        WriteCapacityUnits: 0
+Outputs:
+  ARMDynamo:
+    Value:
+      Ref: ARMDynamoDBTable
+    Description: DynamoDb Table to test lambdas
+  ARMGoFloatLambdafn:
+    Value:
+      Ref: ARMGoFloat
+    Description: Fn for Go ARM float
+  ARMGoFloatLambdaURL:
+    Value:
+      Fn::GetAtt:
+      - ARMGoFloatURL
+      - FunctionUrl
+  IntelGoIntLambdafn:
+    Value:
+      Ref: IntelGoIntURL
+    Description: Fn for Go Intel Int
+  IntelGoIntLambdaURL:
+    Value:
+      Fn::GetAtt:
+      - IntelGoIntURL
+      - FunctionUrl

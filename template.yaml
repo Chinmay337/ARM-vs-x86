@@ -7,11 +7,11 @@ Resources:
   #   Lambda Function                                                      #
   ##########################################################################
 
-  ARMGo:
+  ARMGoFloat:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: ArmGolang
-      CodeUri: ARMGo/
+      FunctionName: ArmGoFloat
+      CodeUri: ARMGoFloat/
       Handler: bootstrap
       Runtime: provided.al2
       Architectures: [arm64]
@@ -30,40 +30,36 @@ Resources:
     Metadata:
       BuildMethod: makefile
 
-  ARMGoURL:
+  ARMGoFloatURL:
     Type: AWS::Lambda::Url
     Properties:
       AuthType: NONE
-      TargetFunctionArn: !Ref ARMGo
+      TargetFunctionArn: !Ref ARMGoFloat
 
   permissionForURLInvokeArm:
     Type: AWS::Lambda::Permission
     Properties:
-      FunctionName: !Ref ARMGo
+      FunctionName: !Ref ARMGoFloat
       FunctionUrlAuthType: "NONE"
       Action: lambda:InvokeFunctionUrl
       Principal: "*"
 
-  permissionForURLInvokeIntel:
-    Type: AWS::Lambda::Permission
-    Properties:
-      FunctionName: !Ref GoIntel
-      FunctionUrlAuthType: "NONE"
-      Action: lambda:InvokeFunctionUrl
-      Principal: "*"
+  ##########################################################################
+  #    I N T E L                                                           #
+  ##########################################################################
 
-  GoIntel:
+  IntelGoInt:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: x86Golang
-      CodeUri: IntelGo/
+      FunctionName: IntelGoInt
+      CodeUri: IntelGoInt/
       Handler: bootstrap
       Runtime: provided.al2
       Architectures:
         - x86_64
       Timeout: 120
       Tags:
-        Name: "IntelGoFloat"
+        Name: "IntelGoInt"
       Policies:
         ## Read more about SAM Policy templates at:
         ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
@@ -76,11 +72,19 @@ Resources:
     Metadata:
       BuildMethod: makefile
 
-  GoIntelURL:
+  IntelGoIntURL:
     Type: AWS::Lambda::Url
     Properties:
       AuthType: NONE
-      TargetFunctionArn: !Ref GoIntel
+      TargetFunctionArn: !Ref IntelGoInt
+
+  permissionForURLInvokeIntelInt:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref IntelGoInt
+      FunctionUrlAuthType: "NONE"
+      Action: lambda:InvokeFunctionUrl
+      Principal: "*"
 
   ##########################################################################
   #   DynamoDB                                                            #
@@ -129,19 +133,16 @@ Outputs:
     Value: !Ref ARMDynamoDBTable
     Description: DynamoDb Table to test lambdas
 
-  ARMGoLambdafn:
-    Value: !Ref ARMGo
-    Description: Fn for Go ARM
+  ARMGoFloatLambdafn:
+    Value: !Ref ARMGoFloat
+    Description: Fn for Go ARM float
 
-  ARMGoLambdaURL:
-    Value: !GetAtt ARMGoURL.FunctionUrl
+  ARMGoFloatLambdaURL:
+    Value: !GetAtt ARMGoFloatURL.FunctionUrl
 
-  x86GoLambdafn:
-    Value: !Ref GoIntelURL
-    Description: Fn for Go ARM
+  IntelGoIntLambdafn:
+    Value: !Ref IntelGoIntURL
+    Description: Fn for Go Intel Int
 
-  x86GoLambdaURL:
-    Value: !GetAtt GoIntelURL.FunctionUrl
-#  BlogAPIEndpointSubs:
-#    Value: !Ref BlogHttpApi
-#    Description : API Gateway POST Endpoint for Subscribers
+  IntelGoIntLambdaURL:
+    Value: !GetAtt IntelGoIntURL.FunctionUrl
