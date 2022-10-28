@@ -36,10 +36,47 @@ Resources:
       AuthType: NONE
       TargetFunctionArn: !Ref ARMGoFloat
 
-  permissionForURLInvokeArm:
+  permissionForURLInvokeArmFloat:
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName: !Ref ARMGoFloat
+      FunctionUrlAuthType: "NONE"
+      Action: lambda:InvokeFunctionUrl
+      Principal: "*"
+
+  ARMGoInt:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: ArmGoInt
+      CodeUri: ARMGoInt/
+      Handler: bootstrap
+      Runtime: provided.al2
+      Architectures: [arm64]
+      Timeout: 120
+      Tags:
+        Name: "ARMGoInt"
+      Policies:
+        ## Read more about SAM Policy templates at:
+        ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+        - AWSLambdaExecute
+        - DynamoDBWritePolicy:
+            TableName: !Ref ARMDynamoDBTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref ARMDynamoDBTable
+    Metadata:
+      BuildMethod: makefile
+
+  ARMGoIntURL:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn: !Ref ARMGoInt
+
+  permissionForURLInvokeArmInt:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref ARMGoInt
       FunctionUrlAuthType: "NONE"
       Action: lambda:InvokeFunctionUrl
       Principal: "*"
@@ -82,6 +119,44 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName: !Ref IntelGoInt
+      FunctionUrlAuthType: "NONE"
+      Action: lambda:InvokeFunctionUrl
+      Principal: "*"
+
+  IntelGoFloat:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: IntelGoFloat
+      CodeUri: IntelGoFloat/
+      Handler: bootstrap
+      Runtime: provided.al2
+      Architectures:
+        - x86_64
+      Timeout: 120
+      Tags:
+        Name: "IntelGoFloat"
+      Policies:
+        ## Read more about SAM Policy templates at:
+        ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+        - AWSLambdaExecute
+        - DynamoDBWritePolicy:
+            TableName: !Ref ARMDynamoDBTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref ARMDynamoDBTable
+    Metadata:
+      BuildMethod: makefile
+
+  IntelGoFloatURL:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn: !Ref IntelGoFloat
+
+  permissionForURLInvokeIntelFloat:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref IntelGoFloat
       FunctionUrlAuthType: "NONE"
       Action: lambda:InvokeFunctionUrl
       Principal: "*"
@@ -140,9 +215,9 @@ Outputs:
   ARMGoFloatLambdaURL:
     Value: !GetAtt ARMGoFloatURL.FunctionUrl
 
-  IntelGoIntLambdafn:
-    Value: !Ref IntelGoIntURL
-    Description: Fn for Go Intel Int
+  IntelGoFloatLambdafn:
+    Value: !Ref IntelGoFloatURL
+    Description: Fn for Go Intel Float
 
-  IntelGoIntLambdaURL:
-    Value: !GetAtt IntelGoIntURL.FunctionUrl
+  IntelGoFloatLambdaURL:
+    Value: !GetAtt IntelGoFloatURL.FunctionUrl

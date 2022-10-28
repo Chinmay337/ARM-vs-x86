@@ -34,11 +34,49 @@ Resources:
       AuthType: NONE
       TargetFunctionArn:
         Ref: ARMGoFloat
-  permissionForURLInvokeArm:
+  permissionForURLInvokeArmFloat:
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName:
         Ref: ARMGoFloat
+      FunctionUrlAuthType: NONE
+      Action: lambda:InvokeFunctionUrl
+      Principal: '*'
+  ARMGoInt:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: ArmGoInt
+      CodeUri: ARMGoInt
+      Handler: bootstrap
+      Runtime: provided.al2
+      Architectures:
+      - arm64
+      Timeout: 120
+      Tags:
+        Name: ARMGoInt
+      Policies:
+      - AWSLambdaExecute
+      - DynamoDBWritePolicy:
+          TableName:
+            Ref: ARMDynamoDBTable
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: ARMDynamoDBTable
+    Metadata:
+      BuildMethod: makefile
+      SamResourceId: ARMGoInt
+  ARMGoIntURL:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn:
+        Ref: ARMGoInt
+  permissionForURLInvokeArmInt:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+        Ref: ARMGoInt
       FunctionUrlAuthType: NONE
       Action: lambda:InvokeFunctionUrl
       Principal: '*'
@@ -80,6 +118,44 @@ Resources:
       FunctionUrlAuthType: NONE
       Action: lambda:InvokeFunctionUrl
       Principal: '*'
+  IntelGoFloat:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: IntelGoFloat
+      CodeUri: IntelGoFloat
+      Handler: bootstrap
+      Runtime: provided.al2
+      Architectures:
+      - x86_64
+      Timeout: 120
+      Tags:
+        Name: IntelGoFloat
+      Policies:
+      - AWSLambdaExecute
+      - DynamoDBWritePolicy:
+          TableName:
+            Ref: ARMDynamoDBTable
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: ARMDynamoDBTable
+    Metadata:
+      BuildMethod: makefile
+      SamResourceId: IntelGoFloat
+  IntelGoFloatURL:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn:
+        Ref: IntelGoFloat
+  permissionForURLInvokeIntelFloat:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+        Ref: IntelGoFloat
+      FunctionUrlAuthType: NONE
+      Action: lambda:InvokeFunctionUrl
+      Principal: '*'
   ARMDynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -112,12 +188,12 @@ Outputs:
       Fn::GetAtt:
       - ARMGoFloatURL
       - FunctionUrl
-  IntelGoIntLambdafn:
+  IntelGoFloatLambdafn:
     Value:
-      Ref: IntelGoIntURL
-    Description: Fn for Go Intel Int
-  IntelGoIntLambdaURL:
+      Ref: IntelGoFloatURL
+    Description: Fn for Go Intel Float
+  IntelGoFloatLambdaURL:
     Value:
       Fn::GetAtt:
-      - IntelGoIntURL
+      - IntelGoFloatURL
       - FunctionUrl

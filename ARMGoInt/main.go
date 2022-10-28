@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"sort"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -30,7 +29,6 @@ func HandleRequest(request events.LambdaFunctionURLRequest) (events.LambdaFuncti
 
 func ComputeFloat(input []float64) (events.LambdaFunctionURLResponse, error) {
 	for _, val := range input {
-		fmt.Println("Curr item is", val)
 		closest_items := []float64{}
 		bigger := 0
 		smaller := 0
@@ -45,15 +43,7 @@ func ComputeFloat(input []float64) (events.LambdaFunctionURLResponse, error) {
 			}
 
 			closest_items = append(closest_items, comparator)
-
-			fmt.Println(comparator, val, v, "val/v")
 		}
-		rng = rng / float64(len(input))
-		sort.Float64s(closest_items)
-		fmt.Println("closest items", closest_items)
-		fmt.Println(bigger, "items bigger", smaller, "items smaller")
-		fmt.Println("Range of number is ", rng)
-
 	}
 	ApiResponse := events.LambdaFunctionURLResponse{Body: "Successfully Completed Computation", StatusCode: 200}
 	return ApiResponse, nil

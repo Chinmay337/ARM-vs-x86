@@ -15,37 +15,19 @@ type InputType struct {
 
 func main() {
 	lambda.Start(HandleRequest)
-
 }
 
 func HandleRequest(request events.LambdaFunctionURLRequest) (events.LambdaFunctionURLResponse, error) {
-
-	// req, _ := json.Marshal(request)
-	// fmt.Println(string(req))
-
-	// ApiResponse := events.LambdaFunctionURLResponse{Body: "Success testing request!!", StatusCode: 200}
-	// return ApiResponse, nil
 
 	body := InputType{}
 	json.Unmarshal([]byte(request.Body), &body)
 
 	fmt.Printf("parsed", body)
-
-	//	x, _ := json.MarshalIndent(body, "", "  ")
-	//	ApiResponse := events.LambdaFunctionURLResponse{Body: string(x), StatusCode: 200}
-	//	return ApiResponse, nil
-
-	// if body.Flag == "int" {
-	// 	fmt.Println("Doing Int")
-	// 	return ComputeInt(body.InputInt)
-	// }
 	fmt.Println("Doing Int")
 	return ComputeInt(body.Input)
-
 }
 
 func ComputeFloat(input []float64) (events.LambdaFunctionURLResponse, error) {
-	//sample_arr := []float64{10.4, 11.2, 192.5, 200.145, 12.1341}
 	for _, val := range input {
 		fmt.Println("Curr item is", val)
 		closest_items := []float64{}
@@ -62,15 +44,9 @@ func ComputeFloat(input []float64) (events.LambdaFunctionURLResponse, error) {
 			}
 
 			closest_items = append(closest_items, comparator)
-
-			fmt.Println(comparator, val, v, "val/v")
 		}
 		rng = rng / float64(len(input))
 		sort.Float64s(closest_items)
-		fmt.Println("closest items", closest_items)
-		fmt.Println(bigger, "items bigger", smaller, "items smaller")
-		fmt.Println("Range of number is ", rng)
-
 	}
 	ApiResponse := events.LambdaFunctionURLResponse{Body: "Successfully Completed Computation", StatusCode: 200}
 	return ApiResponse, nil
