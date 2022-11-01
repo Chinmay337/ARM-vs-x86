@@ -22,11 +22,6 @@ Resources:
         ## Read more about SAM Policy templates at:
         ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
         - AWSLambdaExecute
-        - DynamoDBWritePolicy:
-            TableName: !Ref ARMDynamoDBTable
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref ARMDynamoDBTable
     Metadata:
       BuildMethod: makefile
 
@@ -59,11 +54,6 @@ Resources:
         ## Read more about SAM Policy templates at:
         ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
         - AWSLambdaExecute
-        - DynamoDBWritePolicy:
-            TableName: !Ref ARMDynamoDBTable
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref ARMDynamoDBTable
     Metadata:
       BuildMethod: makefile
 
@@ -101,11 +91,6 @@ Resources:
         ## Read more about SAM Policy templates at:
         ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
         - AWSLambdaExecute
-        - DynamoDBWritePolicy:
-            TableName: !Ref ARMDynamoDBTable
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref ARMDynamoDBTable
     Metadata:
       BuildMethod: makefile
 
@@ -139,11 +124,6 @@ Resources:
         ## Read more about SAM Policy templates at:
         ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
         - AWSLambdaExecute
-        - DynamoDBWritePolicy:
-            TableName: !Ref ARMDynamoDBTable
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref ARMDynamoDBTable
     Metadata:
       BuildMethod: makefile
 
@@ -199,10 +179,6 @@ Resources:
 ##########################################################################
 
 Outputs:
-  ARMDynamo:
-    Value: !Ref ARMDynamoDBTable
-    Description: DynamoDb Table to test lambdas
-
   ARMGoFloatLambdafn:
     Value: !Ref ARMGoFloat
     Description: Fn for Go ARM float
@@ -216,3 +192,10 @@ Outputs:
 
   IntelGoFloatLambdaURL:
     Value: !GetAtt IntelGoFloatURL.FunctionUrl
+
+  ARMJsFloatLambdafn:
+    Value: !Ref ARMJsFloat
+    Description: Fn for Javascript ARM float
+
+  ARMJsFloatLambdaURL:
+    Value: !GetAtt ARMJsFloatURL.FunctionUrl
