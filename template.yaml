@@ -161,44 +161,39 @@ Resources:
       Action: lambda:InvokeFunctionUrl
       Principal: "*"
 
-  ##########################################################################
-  #   DynamoDB                                                            #
-  ##########################################################################
-  ARMDynamoDBTable:
-    Type: AWS::DynamoDB::Table
+  ########################################### MB
+  ARMJsFloat:
+    Type: AWS::Serverless::Function
     Properties:
-      TableName: ARMDynamo
-      AttributeDefinitions:
-        - AttributeName: Email
-          AttributeType: S
-        - AttributeName: Date
-          AttributeType: S
-      KeySchema:
-        - AttributeName: Email
-          KeyType: HASH
-        - AttributeName: Date
-          KeyType: RANGE
-      BillingMode: PAY_PER_REQUEST
-      ProvisionedThroughput:
-        ReadCapacityUnits: 0
-        WriteCapacityUnits: 0
+      FunctionName: ArmJsFloat
+      CodeUri: ARMJsFloat/
+      Handler: app.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures: [arm64]
+      Timeout: 120
+      Tags:
+        Name: "ARMJsFloat"
+      Policies:
+        ## Read more about SAM Policy templates at:
+        ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+        - AWSLambdaExecute
 
-#  BlogHttpApi:
-#    Type: AWS::Serverless::Api
-#    Properties:
-#      StageName: Test
-#      CorsConfiguration: True
+  ARMJsFloatURL:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn: !Ref ARMJsFloat
 
-#  BlogEmailDynamoTable:
-#    Type: AWS::DynamoDB::Table
-#    Properties:
-#      AttributeDefinitions:
-#        - AttributeName: Email
-#          AttributeType: S
-#      KeySchema:
-#        - AttributeName: Email
-#          KeyType: HASH
-#      BillingMode: PAY_PER_REQUEST
+  permissionForURLInvokeArmJsFloat:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref ARMJsFloat
+      FunctionUrlAuthType: "NONE"
+      Action: lambda:InvokeFunctionUrl
+      Principal: "*"
+
+########################################### MB
+
 ##########################################################################
 #   OUTPUTS                                                              #
 ##########################################################################
