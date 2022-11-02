@@ -147,7 +147,7 @@ Resources:
     Properties:
       FunctionName: ArmJsFloat
       CodeUri: ARMJsFloat/
-      Handler: app.lambdaHandler
+      Handler: index.handler
       Runtime: nodejs16.x
       Architectures: [arm64]
       Timeout: 120
