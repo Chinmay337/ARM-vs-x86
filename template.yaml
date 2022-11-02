@@ -146,7 +146,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: ArmJsFloat
-      CodeUri: ARMJsFloat/
+      CodeUri: JsFloat/
       Handler: index.handler
       Runtime: nodejs16.x
       Architectures: [arm64]
@@ -178,7 +178,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: IntelJsFloat
-      CodeUri: ARMJsFloat/
+      CodeUri: JsFloat/
       Handler: index.handler
       Runtime: nodejs16.x
       Architectures:
@@ -205,6 +205,69 @@ Resources:
       Action: lambda:InvokeFunctionUrl
       Principal: "*"
 
+  # JS INT
+  IntelJsInt:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: IntelJsInt
+      CodeUri: JsInt/
+      Handler: index.handler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      Timeout: 120
+      Tags:
+        Name: "IntelJsInt"
+      Policies:
+        ## Read more about SAM Policy templates at:
+        ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+        - AWSLambdaExecute
+
+  IntelJsIntURL:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn: !Ref IntelJsInt
+
+  permissionForURLInvokeIntelJsInt:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref IntelJsInt
+      FunctionUrlAuthType: "NONE"
+      Action: lambda:InvokeFunctionUrl
+      Principal: "*"
+
+  ARMJsInt:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: ARMJsInt
+      CodeUri: JsInt/
+      Handler: index.handler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      Timeout: 120
+      Tags:
+        Name: "ARMJsInt"
+      Policies:
+        ## Read more about SAM Policy templates at:
+        ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+        - AWSLambdaExecute
+
+  ARMJsIntURL:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn: !Ref ARMJsInt
+
+  permissionForURLInvokeARMJsInt:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref ARMJsInt
+      FunctionUrlAuthType: "NONE"
+      Action: lambda:InvokeFunctionUrl
+      Principal: "*"
+
 ##########################################################################
 #   OUTPUTS                                                              #
 ##########################################################################
@@ -217,12 +280,12 @@ Outputs:
   ARMGoFloatLambdaURL:
     Value: !GetAtt ARMGoFloatURL.FunctionUrl
 
-  IntelGoFloatLambdafn:
-    Value: !Ref IntelGoFloatURL
-    Description: Fn for Go Intel Float
+  ARMGoIntLambdafn:
+    Value: !Ref ARMGoInt
+    Description: Fn for Go ARM Int
 
-  IntelGoFloatLambdaURL:
-    Value: !GetAtt IntelGoFloatURL.FunctionUrl
+  ARMGoIntLambdaURL:
+    Value: !GetAtt ARMGoIntURL.FunctionUrl
 
   ARMJsFloatLambdafn:
     Value: !Ref ARMJsFloat
@@ -230,6 +293,20 @@ Outputs:
 
   ARMJsFloatLambdaURL:
     Value: !GetAtt ARMJsFloatURL.FunctionUrl
+
+  ARMJsIntLambdafn:
+    Value: !Ref ARMJsInt
+    Description: Fn for Javascript ARM Int
+
+  ARMJsIntLambdaURL:
+    Value: !GetAtt ARMJsIntURL.FunctionUrl
+
+  IntelGoFloatLambdafn:
+    Value: !Ref IntelGoFloatURL
+    Description: Fn for Go Intel Float
+
+  IntelGoFloatLambdaURL:
+    Value: !GetAtt IntelGoFloatURL.FunctionUrl
 
   IntelJsFloatLambdafn:
     Value: !Ref IntelJsFloat
