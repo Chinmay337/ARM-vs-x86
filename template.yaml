@@ -172,7 +172,38 @@ Resources:
       Action: lambda:InvokeFunctionUrl
       Principal: "*"
 
-########################################### MB
+  ########################################### MB
+
+  IntelJsFloat:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: IntelJsFloat
+      CodeUri: ARMJsFloat/
+      Handler: index.handler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      Timeout: 120
+      Tags:
+        Name: "IntelJsFloat"
+      Policies:
+        ## Read more about SAM Policy templates at:
+        ## https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+        - AWSLambdaExecute
+
+  IntelJsFloatURL:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn: !Ref IntelJsFloat
+
+  permissionForURLInvokeIntelJsFloat:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref IntelJsFloat
+      FunctionUrlAuthType: "NONE"
+      Action: lambda:InvokeFunctionUrl
+      Principal: "*"
 
 ##########################################################################
 #   OUTPUTS                                                              #
@@ -199,3 +230,10 @@ Outputs:
 
   ARMJsFloatLambdaURL:
     Value: !GetAtt ARMJsFloatURL.FunctionUrl
+
+  IntelJsFloatLambdafn:
+    Value: !Ref IntelJsFloat
+    Description: Fn for Javascript Intel float
+
+  IntelJsFloatLambdaURL:
+    Value: !GetAtt IntelJsFloatURL.FunctionUrl
