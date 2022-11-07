@@ -283,6 +283,14 @@ Resources:
           . ~/.nvm/nvm.sh
           nvm install --lts
           node -e "console.log('Running Node.js ' + process.version)"
+          export ARM_FLOAT_GO=${!GetAtt ARMGoFloatURL.FunctionUrl }
+          export ARM_INT_GO=${!GetAtt ARMGoIntURL.FunctionUrl }
+          export INTEL_FLOAT_GO=${!GetAtt IntelGoFloatURL.FunctionUrl }
+          export INTEL_INT_GO=${!GetAtt IntelGoIntURL.FunctionUrl }
+          export ARM_FLOAT_JS=${!GetAtt ARMJsFloatURL.FunctionUrl }
+          export ARM_INT_JS=${!GetAtt ARMJsIntURL.FunctionUrl }
+          export INTEL_FLOAT_JS=${!GetAtt IntelJsFloatURL.FunctionUrl }
+          export INTEL_INT_JS=${!GetAtt IntelJsIntURL.FunctionUrl }
 
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -350,5 +358,20 @@ Outputs:
   IntelJsFloatLambdaURL:
     Value: !GetAtt IntelJsFloatURL.FunctionUrl
 
+  IntelGoIntLambdafn:
+    Value: !Ref IntelGoInt
+    Description: Fn for Go Intel float
+
+  IntelGoIntLambdaURL:
+    Value: !GetAtt IntelGoIntURL.FunctionUrl
+
+  IntelJsIntLambdafn:
+    Value: !Ref IntelJsInt
+    Description: Fn for Go Intel float
+
+  IntelJsIntLambdaURL:
+    Value: !GetAtt IntelJsIntURL.FunctionUrl
+
   EC2TestingServer:
     Value: !GetAtt WebAppInstance.PublicIp
+# 44.202.141.233
