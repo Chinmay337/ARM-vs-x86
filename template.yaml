@@ -268,6 +268,41 @@ Resources:
       Action: lambda:InvokeFunctionUrl
       Principal: "*"
 
+  WebAppInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-09d3b3274b6c5d4aa # ImageID valid only in us-east-1 region
+      InstanceType: t2.micro
+      KeyName: EC2Test
+      SecurityGroupIds:
+        - !Ref WebAppSecurityGroup
+      UserData: !Base64
+        Fn::Sub: |
+          #!/bin/bash
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+          . ~/.nvm/nvm.sh
+          nvm install --lts
+          node -e "console.log('Running Node.js ' + process.version)"
+
+  WebAppSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: "TestingEC2"
+      GroupDescription: "Allow HTTP/HTTPS and SSH inbound and outbound traffic"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
 ##########################################################################
 #   OUTPUTS                                                              #
 ##########################################################################
@@ -314,3 +349,6 @@ Outputs:
 
   IntelJsFloatLambdaURL:
     Value: !GetAtt IntelJsFloatURL.FunctionUrl
+
+  EC2TestingServer:
+    Value: !GetAtt WebAppInstance.PublicIP
