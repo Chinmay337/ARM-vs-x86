@@ -351,4 +351,4 @@ Outputs:
     Value: !GetAtt IntelJsFloatURL.FunctionUrl
 
   EC2TestingServer:
-    Value: !GetAtt WebAppInstance.PublicIP
+    Value: !GetAtt WebAppInstance.PublicIp
