@@ -268,7 +268,7 @@ Resources:
       Action: lambda:InvokeFunctionUrl
       Principal: "*"
 
-  WebAppInstance:
+  WebAppInstance2:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: ami-09d3b3274b6c5d4aa # ImageID valid only in us-east-1 region
@@ -284,7 +284,7 @@ Resources:
             - |
               #!/usr/bin/env bash
               yum update -y
-              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh
               . ~/.nvm/nvm.sh
               nvm install 16.0.0
               yum install -y git
@@ -387,4 +387,4 @@ Outputs:
     Value: !GetAtt IntelJsIntURL.FunctionUrl
 
   EC2TestingServer:
-    Value: !GetAtt WebAppInstance.PublicIp
+    Value: !GetAtt WebAppInstance2.PublicIp
