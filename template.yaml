@@ -276,21 +276,30 @@ Resources:
       KeyName: EC2Test
       SecurityGroupIds:
         - !Ref WebAppSecurityGroup
-      UserData: !Base64
-        Fn::Sub: |
-          #!/bin/bash
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-          . ~/.nvm/nvm.sh
-          nvm install --lts
-          node -e "console.log('Running Node.js ' + process.version)"
-          export ARM_FLOAT_GO=${!GetAtt ARMGoFloatURL.FunctionUrl }
-          export ARM_INT_GO=${!GetAtt ARMGoIntURL.FunctionUrl }
-          export INTEL_FLOAT_GO=${!GetAtt IntelGoFloatURL.FunctionUrl }
-          export INTEL_INT_GO=${!GetAtt IntelGoIntURL.FunctionUrl }
-          export ARM_FLOAT_JS=${!GetAtt ARMJsFloatURL.FunctionUrl }
-          export ARM_INT_JS=${!GetAtt ARMJsIntURL.FunctionUrl }
-          export INTEL_FLOAT_JS=${!GetAtt IntelJsFloatURL.FunctionUrl }
-          export INTEL_INT_JS=${!GetAtt IntelJsIntURL.FunctionUrl }
+      UserData:
+        Fn::Base64: !Sub
+          - |
+            #!/bin/bash
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+            . ~/.nvm/nvm.sh
+            nvm install --lts
+            node -e "console.log('Running Node.js ' + process.version)"
+            export ARM_FLOAT_GO=${armFloatGo} >> /etc/profile
+            export ARM_INT_GO=${armIntGo} >> /etc/profile
+            export INTEL_FLOAT_GO=${intelFloatGo} >> /etc/profile
+            export INTEL_INT_GO=${intelIntGo} >> /etc/profile
+            export ARM_FLOAT_JS=${armFloatJs} >> /etc/profile
+            export ARM_INT_JS=${armIntJs} >> /etc/profile
+            export INTEL_FLOAT_JS=${intelFloatJs} >> /etc/profile
+            export INTEL_INT_JS=${intelIntJs} >> /etc/profile
+          - armFloatGo: !GetAtt ARMGoFloatURL.FunctionUrl
+          - armIntGo: !GetAtt ARMGoIntURL.FunctionUrl
+          - intelFloatGo: !GetAtt IntelGoFloatURL.FunctionUrl
+          - intelIntGo: !GetAtt IntelGoIntURL.FunctionUrl
+          - armFloatJs: !GetAtt ARMJsFloatURL.FunctionUrl
+          - armIntJs: !GetAtt ARMJsIntURL.FunctionUrl
+          - intelFloatJs: !GetAtt IntelJsFloatURL.FunctionUrl
+          - intelIntJs: !GetAtt IntelJsIntURL.FunctionUrl
 
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
