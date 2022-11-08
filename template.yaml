@@ -282,7 +282,7 @@ Resources:
             - |
               #!/usr/bin/env bash
               yum update -y
-              curl -sL https://rpm.nodesource.com/setup_10.x | bash -
+              curl -sL https://rpm.nodesource.com/setup_19.x | bash -
               yum install -y nodejs git
               node -e "console.log('Running Node.js ' + process.version)"
               echo 'export ARM_FLOAT_GO=${armFloatGo}' >> /etc/profile
