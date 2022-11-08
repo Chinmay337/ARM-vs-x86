@@ -268,7 +268,7 @@ Resources:
       Action: lambda:InvokeFunctionUrl
       Principal: "*"
 
-  WebAppInstance:
+  WebAppInstance2:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: ami-09d3b3274b6c5d4aa # ImageID valid only in us-east-1 region
@@ -294,13 +294,13 @@ Resources:
               export INTEL_FLOAT_JS=${intelFloatJs} >> /etc/profile
               export INTEL_INT_JS=${intelIntJs} >> /etc/profile
             - armFloatGo: !GetAtt ARMGoFloatURL.FunctionUrl
-            - armIntGo: !GetAtt ARMGoIntURL.FunctionUrl
-            - intelFloatGo: !GetAtt IntelGoFloatURL.FunctionUrl
-            - intelIntGo: !GetAtt IntelGoIntURL.FunctionUrl
-            - armFloatJs: !GetAtt ARMJsFloatURL.FunctionUrl
-            - armIntJs: !GetAtt ARMJsIntURL.FunctionUrl
-            - intelFloatJs: !GetAtt IntelJsFloatURL.FunctionUrl
-            - intelIntJs: !GetAtt IntelJsIntURL.FunctionUrl
+              armIntGo: !GetAtt ARMGoIntURL.FunctionUrl
+              intelFloatGo: !GetAtt IntelGoFloatURL.FunctionUrl
+              intelIntGo: !GetAtt IntelGoIntURL.FunctionUrl
+              armFloatJs: !GetAtt ARMJsFloatURL.FunctionUrl
+              armIntJs: !GetAtt ARMJsIntURL.FunctionUrl
+              intelFloatJs: !GetAtt IntelJsFloatURL.FunctionUrl
+              intelIntJs: !GetAtt IntelJsIntURL.FunctionUrl
 
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -383,5 +383,5 @@ Outputs:
     Value: !GetAtt IntelJsIntURL.FunctionUrl
 
   EC2TestingServer:
-    Value: !GetAtt WebAppInstance.PublicIp
+    Value: !GetAtt WebAppInstance2.PublicIp
 # 44.202.141.233
