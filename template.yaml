@@ -268,7 +268,7 @@ Resources:
       Action: lambda:InvokeFunctionUrl
       Principal: "*"
 
-  WebAppInstance2:
+  WebAppInstance:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: ami-09d3b3274b6c5d4aa # ImageID valid only in us-east-1 region
@@ -385,5 +385,4 @@ Outputs:
     Value: !GetAtt IntelJsIntURL.FunctionUrl
 
   EC2TestingServer:
-    Value: !GetAtt WebAppInstance2.PublicIp
-# 44.202.141.233
+    Value: !GetAtt WebAppInstance.PublicIp
