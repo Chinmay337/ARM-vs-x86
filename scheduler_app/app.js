@@ -1,12 +1,3 @@
-const ARM_FLOAT_GO = process.env.ARM_FLOAT_GO;
-const ARM_INT_GO = process.env.ARM_INT_GO;
-const INTEL_FLOAT_GO = process.env.INTEL_FLOAT_GO;
-const INTEL_INT_GO = process.env.INTEL_INT_GO;
-const ARM_FLOAT_JS = process.env.ARM_FLOAT_JS;
-const ARM_INT_JS = process.env.ARM_INT_JS;
-const INTEL_FLOAT_JS = process.env.INTEL_FLOAT_JS;
-const INTEL_INT_JS = process.env.INTEL_INT_JS;
-
 const endpoints = [
   process.env.ARM_FLOAT_GO,
   process.env.ARM_INT_GO,
