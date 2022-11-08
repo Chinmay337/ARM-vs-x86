@@ -285,14 +285,14 @@ Resources:
               curl -sL https://rpm.nodesource.com/setup_10.x | bash -
               yum install -y nodejs git
               node -e "console.log('Running Node.js ' + process.version)"
-              export ARM_FLOAT_GO=${armFloatGo} >> /etc/profile
-              export ARM_INT_GO=${armIntGo} >> /etc/profile
-              export INTEL_FLOAT_GO=${intelFloatGo} >> /etc/profile
-              export INTEL_INT_GO=${intelIntGo} >> /etc/profile
-              export ARM_FLOAT_JS=${armFloatJs} >> /etc/profile
-              export ARM_INT_JS=${armIntJs} >> /etc/profile
-              export INTEL_FLOAT_JS=${intelFloatJs} >> /etc/profile
-              export INTEL_INT_JS=${intelIntJs} >> /etc/profile
+              echo 'export ARM_FLOAT_GO=${armFloatGo}' >> /etc/profile
+              echo 'export ARM_INT_GO=${armIntGo}' >> /etc/profile
+              echo 'export INTEL_FLOAT_GO=${intelFloatGo}' >> /etc/profile
+              echo 'export INTEL_INT_GO=${intelIntGo}' >> /etc/profile
+              echo 'export ARM_FLOAT_JS=${armFloatJs}' >> /etc/profile
+              echo 'export ARM_INT_JS=${armIntJs}' >> /etc/profile
+              echo 'export INTEL_FLOAT_JS=${intelFloatJs}' >> /etc/profile
+              echo 'export INTEL_INT_JS=${intelIntJs}' >> /etc/profile
             - armFloatGo: !GetAtt ARMGoFloatURL.FunctionUrl
               armIntGo: !GetAtt ARMGoIntURL.FunctionUrl
               intelFloatGo: !GetAtt IntelGoFloatURL.FunctionUrl
