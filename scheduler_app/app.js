@@ -25,7 +25,7 @@ const makeRequest = async (endpoint) => {
 const currentTime = new Date();
 
 const burstEndpoints = async (startTime) => {
-  while (new Date() - startTime < 15) {
+  while (new Date() - startTime < 15 * 60) {
     const res = await Promise.all(endpoints.map(makeRequest));
     const data = res.map((res) => res.data);
   }
