@@ -274,6 +274,8 @@ Resources:
       ImageId: ami-09d3b3274b6c5d4aa # ImageID valid only in us-east-1 region
       InstanceType: t2.micro
       KeyName: EC2Test
+      Tags:
+        Schedule: "ARMSchedule"
       SecurityGroupIds:
         - !Ref WebAppSecurityGroup
       UserData:
