@@ -275,7 +275,8 @@ Resources:
       InstanceType: t2.micro
       KeyName: EC2Test
       Tags:
-        Schedule: "ARMSchedule"
+        - Key: "Schedule"
+          Value: "ARMSchedule"
       SecurityGroupIds:
         - !Ref WebAppSecurityGroup
       UserData:
