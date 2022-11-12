@@ -268,7 +268,7 @@ Resources:
       Action: lambda:InvokeFunctionUrl
       Principal: "*"
 
-  WebInstance2:
+  WebInstance:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: ami-09d3b3274b6c5d4aa # ImageID valid only in us-east-1 region
@@ -313,11 +313,19 @@ Resources:
               echo 'export ARM_INT_JS=${armIntJs}' >> /etc/profile
               echo 'export INTEL_FLOAT_JS=${intelFloatJs}' >> /etc/profile
               echo 'export INTEL_INT_JS=${intelIntJs}' >> /etc/profile
+              echo 'export ARM_FLOAT_GO=${armFloatGo}' >> /etc/profile.d/script.sh
+              echo 'export ARM_INT_GO=${armIntGo}' >> /etc/profile.d/script.sh
+              echo 'export INTEL_FLOAT_GO=${intelFloatGo}' >> /etc/profile.d/script.sh
+              echo 'export INTEL_INT_GO=${intelIntGo}' >> /etc/profile.d/script.sh
+              echo 'export ARM_FLOAT_JS=${armFloatJs}' >> /etc/profile.d/script.sh
+              echo 'export ARM_INT_JS=${armIntJs}' >> /etc/profile.d/script.sh
+              echo 'export INTEL_FLOAT_JS=${intelFloatJs}' >> /etc/profile.d/script.sh
+              echo 'export INTEL_INT_JS=${intelIntJs}' >> /etc/profile.d/script.sh
               cd /home/ec2-user/ && git clone https://github.com/Chinmay337/EC2-Scheduler-Instance.git
               cd EC2-Scheduler-Instance
               npm i
               chmod +x /etc/rc.d/rc.local
-              echo 'sudo -E node /home/ec2-user/EC2-Scheduler-Instance/app.js >> /home/ec2-user/arm.txt' >> /etc/rc.local
+              echo 'sudo -E node app.js >> /home/ec2-user/paul.txt' >> /etc/rc.local
 
             - armFloatGo: !GetAtt ARMGoFloatURL.FunctionUrl
               armIntGo: !GetAtt ARMGoIntURL.FunctionUrl
@@ -409,4 +417,4 @@ Outputs:
     Value: !GetAtt IntelJsIntURL.FunctionUrl
 
   EC2TestingServer:
-    Value: !GetAtt WebInstance2.PublicIp
+    Value: !GetAtt WebInstance.PublicIp
