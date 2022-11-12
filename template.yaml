@@ -300,8 +300,11 @@ Resources:
               nvm ls
               EOF
               chown ec2-user:ec2-user /tmp/startup.sh && chmod a+x /tmp/startup.sh
+              sudo ln -s /home/ec2-user/.nvm/versions/node/v16.18.1/bin/node  /usr/bin/node
+              sudo ln -s /home/ec2-user/.nvm/versions/node/v16.18.1/bin/npm /usr/bin/npm
               sleep 1; su - ec2-user -c "/tmp/startup.sh"
               node -e "console.log('Running Node.js ' + process.version)"
+              yum install git -y
               echo 'export ARM_FLOAT_GO=${armFloatGo}' >> /etc/profile
               echo 'export ARM_INT_GO=${armIntGo}' >> /etc/profile
               echo 'export INTEL_FLOAT_GO=${intelFloatGo}' >> /etc/profile
@@ -310,6 +313,13 @@ Resources:
               echo 'export ARM_INT_JS=${armIntJs}' >> /etc/profile
               echo 'export INTEL_FLOAT_JS=${intelFloatJs}' >> /etc/profile
               echo 'export INTEL_INT_JS=${intelIntJs}' >> /etc/profile
+              cd /home/ec2-user/ && git clone https://github.com/Chinmay337/EC2-Scheduler-Instance.git
+              cd EC2-Scheduler-Instance
+              npm i
+              echo 'sudo cd /home/ec2-user/EC2-Scheduler-Instance && git pull && npm i' >> /etc/rc.local
+              echo 'sudo node /home/ec2-user/EC2-Scheduler-Instance app.js >> /var/log/arm.txt' >> /etc/rc.local
+              exit
+
             - armFloatGo: !GetAtt ARMGoFloatURL.FunctionUrl
               armIntGo: !GetAtt ARMGoIntURL.FunctionUrl
               intelFloatGo: !GetAtt IntelGoFloatURL.FunctionUrl

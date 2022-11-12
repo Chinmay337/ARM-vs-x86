@@ -46,19 +46,15 @@ exports.handler = async (event) => {
   if (event.body) {
     const ele = JSON.parse(event.body);
 
-    let iterationCount = ele.intIteration ? ele.intIteration : 1;
-
-    if (Array.isArray(ele?.Input)) {
+    if (Array.isArray(ele?.input)) {
       const start = new Date();
 
-      for (let i = 0; i < iterationCount; i++) {
-        ComputeInt(ele.Input);
-      }
+      ComputeInt(ele.input);
 
       stop = new Date();
 
       var mstime = stop.getTime() - start.getTime();
-      const msg = "Elapsed time in seconds: " + (mstime / 1000).toFixed(3) + ", Iterations: " + iterationCount;
+      const msg = "Elapsed time in seconds: " + (mstime / 1000).toFixed(3);
 
       return prepareReturnValue(200, msg);
     }
