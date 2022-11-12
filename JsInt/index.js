@@ -9,7 +9,7 @@ const ComputeInt = (input) => {
         counter++;
       }
     }
-    console.log("There are ", counter, "prime numbers upto ", val);
+    //  console.log("There are ", counter, "prime numbers upto ", val);
   });
 };
 
