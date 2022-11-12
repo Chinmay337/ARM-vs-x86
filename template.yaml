@@ -316,8 +316,8 @@ Resources:
               cd /home/ec2-user/ && git clone https://github.com/Chinmay337/EC2-Scheduler-Instance.git
               cd EC2-Scheduler-Instance
               npm i
-              echo 'sudo cd /home/ec2-user/EC2-Scheduler-Instance && git pull && npm i' >> /etc/rc.local
-              echo 'sudo node /home/ec2-user/EC2-Scheduler-Instance app.js >> /var/log/arm.txt' >> /etc/rc.local
+              echo 'sudo cd /home/ec2-user/EC2-Scheduler-Instance && sudo git pull && sudo npm i' >> /etc/rc.local
+              echo 'sudo node /home/ec2-user/EC2-Scheduler-Inspwdtance app.js >> /var/log/arm.txt' >> /etc/rc.local
               exit
 
             - armFloatGo: !GetAtt ARMGoFloatURL.FunctionUrl
