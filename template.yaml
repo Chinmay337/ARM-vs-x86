@@ -268,7 +268,7 @@ Resources:
       Action: lambda:InvokeFunctionUrl
       Principal: "*"
 
-  WebInstance:
+  WebInstance2:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: ami-09d3b3274b6c5d4aa # ImageID valid only in us-east-1 region
@@ -317,7 +317,7 @@ Resources:
               cd EC2-Scheduler-Instance
               npm i
               echo 'sudo cd /home/ec2-user/EC2-Scheduler-Instance && sudo git pull && sudo npm i' >> /etc/rc.local
-              echo 'sudo node /home/ec2-user/EC2-Scheduler-Inspwdtance app.js >> /var/log/arm.txt' >> /etc/rc.local
+              echo 'sudo node /home/ec2-user/EC2-Scheduler-Instance app.js >> /var/log/arm.txt' >> /etc/rc.local
               exit
 
             - armFloatGo: !GetAtt ARMGoFloatURL.FunctionUrl
@@ -410,4 +410,4 @@ Outputs:
     Value: !GetAtt IntelJsIntURL.FunctionUrl
 
   EC2TestingServer:
-    Value: !GetAtt WebInstance.PublicIp
+    Value: !GetAtt WebInstance2.PublicIp
